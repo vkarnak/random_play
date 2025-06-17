@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="stylesZZZ.css" />
+    <title>Random Play</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+<nav class="navbar navbar-expand-lg fixed-top bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="zzz.html">
+      <img src="Random Play.png" height="60" />
+    </a>
+
+    <form class="d-flex ms-auto">
+      <button class="btn btn-outline-warning" type="button" onclick="if (confirm('Log out?')) window.location.href='/logout'">
+        Logout
+      </button>
+    </form>
+  </div>
+</nav>
+
+
+    <div id="sidebar">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="changeContent('Profile')">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="changeContent('Catalog')">Movie Catalog</a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="changeContent('MyRentals')"
+            >My Rentals</a
+          >
+        </li>
+        <li class="nav-item admin-tab" style="display: none;">
+  <a class="nav-link" href="#" onclick="changeContent('ManageUsers')">Manage Users</a>
+</li>
+<li class="nav-item admin-tab" style="display: none;">
+  <a class="nav-link" href="#" onclick="changeContent('ManageMovies')">Manage Movies</a>
+</li>
+
+      </ul>
+    </div>
+
+    <div class="content" id="main-content">
+      <h1>Random Play</h1>
+      <p>
+        Welcome, Proxy! Which movie you want rent today? <br />
+        Dive into thrilling plots, iconic characters, and cinematic worlds waiting for your command.
+      </p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scriptsZZZ.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/profile")
+    .then(res => res.json())
+    .then(user => {
+      const sidebar = document.getElementById("sidebar").querySelector("ul");
+      sidebar.innerHTML = "";
+
+      sidebar.innerHTML += `
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="changeContent('Profile')">Profile</a>
+        </li>`;
+
+      if (user.isAdmin) {
+        sidebar.innerHTML += `
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="changeContent('ManageUsers')">Manage Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="changeContent('ManageMovies')">Manage Movies</a>
+          </li>`;
+      } else {
+        sidebar.innerHTML += `
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="changeContent('Catalog')">Movie Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="changeContent('MyRentals')">My Rentals</a>
+          </li>`;
+      }
+      changeContent("Profile");
+    });
+});
+</script>
+
+  
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title">Choose Payment Method</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <select id="payment-method" class="form-select">
+          <option value="Card">Card</option>
+          <option value="Cash">Cash</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button id="confirm-payment-btn" class="btn btn-primary">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="movieModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="movieModalTitle"></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex">
+        <img id="movieModalImage" src="" style="width: 150px; height: 220px; object-fit: cover;" class="me-3 rounded">
+        <div>
+          <p id="movieModalDescription"></p>
+          <p><strong>Year:</strong> <span id="movieModalYear"></span></p>
+          <p><strong>Rating:</strong> <span id="movieModalRating"></span></p>
+          <p><strong>Price:</strong> €<span id="movieModalPrice"></span></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="rentMovieBtn">Rent</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Edit Movie Modal -->
+<div class="modal fade" id="editMovieModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="edit-movie-form" class="modal-content bg-dark text-white" enctype="multipart/form-data">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Movie</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-movie-id" name="id">
+        <input type="hidden" id="existing-image" name="existingImage">
+        <div class="mb-2"><input class="form-control" id="edit-title" name="title" placeholder="Title" required></div>
+        <div class="mb-2"><input class="form-control" id="edit-description" name="description" placeholder="Description" required></div>
+        <div class="mb-2"><input class="form-control" id="edit-year" name="releaseYear" type="number" placeholder="Year" required></div>
+        <div class="mb-2">
+          <select class="form-control" id="edit-rating" name="rating" required>
+            <option value="">Select Rating</option>
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG-13">PG-13</option>
+            <option value="R">R</option>
+          </select>
+        </div>
+        <div class="mb-2"><input class="form-control" id="edit-duration" name="duration" type="number" placeholder="Duration" required></div>
+        <div class="mb-2"><input class="form-control" id="edit-price" name="price" type="number" step="0.01" placeholder="Price (€)" required></div>
+        <div class="mb-2">
+          <select class="form-control" id="edit-category" name="categoryId" required></select>
+        </div>
+        <div class="mb-2"><input class="form-control" type="file" name="image" accept="image/*"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  </body>
+</html>

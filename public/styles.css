@@ -1,0 +1,83 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: url("ZZZ-Background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Orbitron', 'Segoe UI', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #f0f0f0;
+  text-align: center;
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #00d9ff99;
+}
+
+.login-box {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 0 25px #00d9ff66;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"],
+.login-box input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid #00d9ff44;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #00d9ff;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 10px #00d9ffaa;
+  transition: 0.2s ease;
+}
+
+.login-box button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+::placeholder {
+  color: #ccc;
+  opacity: 0.8;
+}
+
+.link-text {
+  margin-top: 15px;
+  font-size: 0.9em;
+  color: #00d9ffcc;
+  cursor: pointer;
+}
+
+.link-text:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 400px) {
+  .login-box {
+    padding: 20px;
+    max-width: 90%;
+  }
+}

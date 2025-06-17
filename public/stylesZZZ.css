@@ -1,0 +1,150 @@
+html {
+  scroll-behavior: smooth;
+}
+
+#sidebar {
+  height: 100vh;
+  width: 150px;
+  position: fixed;
+  top: 20px;
+  left: 0;
+  padding-top: 60px; /* to account for the fixed navbar */
+}
+#sidebar .nav-link {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 15px;
+  margin: 10px 20px;
+  border-radius: 10px;
+  width: 135px;
+  text-align: center;
+  box-shadow: 0 0 40px 40px #3d3344 inset, 0 0 0 0 #c8b6b2;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: white;
+  transition: 0.15s ease-in-out;
+}
+#sidebar .nav-link:hover {
+  box-shadow: 0 0 10px 0 #c8b6b2 inset, 0 0 10px 4px #c8b6b2;
+  color: white;
+}
+.content {
+  margin-left: 170px; /* Match the sidebar width */
+  margin-top: 70px; /* Add margin to avoid overlap with navbar */
+  padding: 20px;
+}
+
+.navbar {
+  background-color: #3d3344;
+}
+
+.navbar .nav-link {
+  text-decoration: none;
+  display: inline-block;
+  width: 140px;
+  height: 35px;
+  line-height: 10px;
+  border-radius: 45px;
+  margin: 10px 20px;
+  font-family: "Montserrat", sans-serif;
+  padding-top: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 500;
+  color: #524f4e;
+  background: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.navbar .nav-link:hover {
+  background: #c8b6b2;
+  box-shadow: 0 15px 20px #e4eff5;
+  color: white !important;
+  transform: translateY(-7px);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-image: url("zzz-background.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.popover {
+  max-width: 600px !important;
+  width: 500px !important;
+}
+
+.popover img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.faction-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.faction-image {
+  width: 100px; /* Размер изображения */
+  height: 100px; /* Размер изображения */
+}
+
+.faction-image:hover {
+  width: 120px; /* Размер изображения */
+  height: 120px; /* Размер изображения */
+}
+
+.filters {
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: 40%;
+}
+
+.character-info {
+  background-color: #3d3344;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  box-shadow: 0 0 0.4px 0.4px #c8b6b2;
+}
+
+.content {
+  background-color: #8a7e82d2;
+  background-size: cover;
+  border-radius: 10px;
+  padding: 20px;
+  color: white !important;
+}
+
+.navbar-brand {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: white !important;
+}
+
+.factions {
+  background-color: #3d3344;
+  display: inline-flex;
+  color: white !important;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.faction-content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 40%;
+}
