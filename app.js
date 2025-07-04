@@ -6,6 +6,11 @@ const multer = require("multer");
 const app = express();
 const port = 3000;
 
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+
 const db = new sqlite3.Database("movie_rental.db", sqlite3.OPEN_READWRITE, (err) => {
   if (err) console.error("DB error:", err.message);
 });
@@ -13,8 +18,10 @@ const db = new sqlite3.Database("movie_rental.db", sqlite3.OPEN_READWRITE, (err)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "images"),
   filename: (req, file, cb) => {
+    const title = req.body.title; 
     const ext = path.extname(file.originalname);
-    const safeName = `${Date.now()}${ext}`; // безопасное имя
+    const safeTitle = title ? title.replace(/[^a-zA-Z0-9-_.]/g, '') : 'untitled'; 
+    const safeName = `${safeTitle}${ext}`; 
     cb(null, safeName);
   },
 });
@@ -58,7 +65,6 @@ app.post("/login", (req, res) => {
   db.get(query, [email, password], (err, user) => {
     if (err) return res.status(500).send("Server error");
     if (!user) return res.status(401).send("Invalid credentials");
-    // Новая проверка на бан
     if (user.status === "banned") return res.status(403).send("You are banned. Contact the administrator.");
     req.session.user = {
       id: user.id,
@@ -268,14 +274,13 @@ app.get("/categories", (req, res) => {
 
 app.post("/admin/add-movie", upload.single("image"), (req, res) => {
   const { title, description, releaseYear, rating, duration, price, categoryId } = req.body;
-  const imageName = req.file?.filename || null;
 
   const query = `
-    INSERT INTO Movie (title, description, releaseYear, rating, duration, price, categoryId, image)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO Movie (title, description, releaseYear, rating, duration, price, categoryId)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.run(query, [title, description, releaseYear, rating, duration, price, categoryId, imageName], (err) => {
+  db.run(query, [title, description, releaseYear, rating, duration, price, categoryId], (err) => {
     if (err) {
       console.error("Add movie error:", err.message);
       return res.json({ success: false });
@@ -283,7 +288,6 @@ app.post("/admin/add-movie", upload.single("image"), (req, res) => {
     res.json({ success: true });
   });
 });
-
 
 app.delete("/admin/delete-movie/:id", (req, res) => {
   db.run("DELETE FROM Movie WHERE id = ?", [req.params.id], (err) => {
@@ -293,7 +297,7 @@ app.delete("/admin/delete-movie/:id", (req, res) => {
 });
 
 
-app.post("/admin/edit-movie", upload.single("image"), (req, res) => {
+app.post("/admin/edit-movie", (req, res) => {
   const {
     id,
     title,
@@ -302,8 +306,7 @@ app.post("/admin/edit-movie", upload.single("image"), (req, res) => {
     rating,
     duration,
     price,
-    categoryId,
-    existingImage
+    categoryId
   } = req.body;
 
   const parsedId = parseInt(id);
@@ -311,13 +314,9 @@ app.post("/admin/edit-movie", upload.single("image"), (req, res) => {
     return res.json({ success: false, error: "Invalid movie ID" });
   }
 
-  const finalImagePath = req.file
-    ? `/images/${req.file.filename}`
-    : existingImage || null;
-
   const query = `
     UPDATE Movie
-    SET title = ?, description = ?, releaseYear = ?, rating = ?, duration = ?, price = ?, categoryId = ?, image = ?
+    SET title = ?, description = ?, releaseYear = ?, rating = ?, duration = ?, price = ?, categoryId = ?
     WHERE id = ?
   `;
 
@@ -329,7 +328,6 @@ app.post("/admin/edit-movie", upload.single("image"), (req, res) => {
     parseInt(duration),
     parseFloat(price),
     parseInt(categoryId),
-    finalImagePath,
     parsedId
   ];
 
@@ -340,6 +338,7 @@ app.post("/admin/edit-movie", upload.single("image"), (req, res) => {
     res.json({ success: true });
   });
 });
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
