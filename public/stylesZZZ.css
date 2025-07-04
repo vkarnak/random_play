@@ -8,7 +8,7 @@ html {
   position: fixed;
   top: 20px;
   left: 0;
-  padding-top: 60px; /* to account for the fixed navbar */
+  padding-top: 60px; 
 }
 #sidebar .nav-link {
   text-decoration: none;
@@ -30,8 +30,8 @@ html {
   color: white;
 }
 .content {
-  margin-left: 170px; /* Match the sidebar width */
-  margin-top: 70px; /* Add margin to avoid overlap with navbar */
+  margin-left: 170px; 
+  margin-top: 70px; 
   padding: 20px;
 }
 
@@ -94,13 +94,13 @@ body {
 }
 
 .faction-image {
-  width: 100px; /* Размер изображения */
-  height: 100px; /* Размер изображения */
+  width: 100px; 
+  height: 100px; 
 }
 
 .faction-image:hover {
-  width: 120px; /* Размер изображения */
-  height: 120px; /* Размер изображения */
+  width: 120px; 
+  height: 120px; 
 }
 
 .filters {
